@@ -598,8 +598,10 @@ function datePicker ($log, $document, $filter) {
             function mousedown(event) {
                 console.log ("Mouse in Picker")
                 event.preventDefault();
-                $document.on('mouseup', mouseup);
-                scope.onclick (event.explicitOriginalTarget);
+                console.log (event)
+                if (event.explicitOriginalTarget) scope.onclick (event.explicitOriginalTarget);
+                else if (event.toElement) scope.onclick (event.toElement);
+                else console.log ("Browser not supported [report a bug]")
             }
 
             function mouseup(event) {
