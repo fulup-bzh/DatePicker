@@ -21,12 +21,12 @@ Installation
 1. download & unzip source from GitHub repository:
 
 2. copy the files
-    3. **/js/angular-foundation-datepicker-min.js**
-    4. **/css/angular-foundation-datepicker.css**
+    - **dist/angular-foundation-datepicker-min.js**
+    - **dist/angular-foundation-datepicker.css**
 
 3. &lt;link&gt; and &lt;script&gt; them into your page 
 
-4. to see the arrows and icons, please include **font-awesome**:
+4. to see the arrows and icons, include **font-awesome**:
 
     &lt;link href=&quot;http://netdna.bootstrapcdn.com/font-awesome/3.0.2/css/font-awesome.css&quot; rel=&quot;stylesheet&quot;&gt;
 	
@@ -47,7 +47,7 @@ Usage  <date-picker>
       format="dd-MM-yy"                        // angular date filter https://docs.angularjs.org/api/ng/filter/date
       language="en"                            // English, French, German, ...
       weekstart="1"                            // Week start [1==Monday]
-      today='true/false'                       // Display or not Today Button
+      today='true|text'                        // If true display 'today' in chosen language, if 'text' display text in todaybouton
       dayoff=[6,7]                             // Disable Saturday/Sunday for selection
       weeknum=true                             // Display week number
       autohide=false                           // Do not close picker after date selection
