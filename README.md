@@ -11,6 +11,10 @@ This DatePicker simplified version for Angular of: http://foundation-datepicker.
  - date picker for foundation/jquery https://github.com/najlepsiwebdesigner/foundation-datepicker
  - date picker for angular/bootstrap https://github.com/angular-ui/bootstrap/tree/master/src/datepicker
 
+Online Demo
+-----------
+  http://breizhme.net/datepicker/demo/
+
 Installation
 -------------
 
