@@ -4,16 +4,13 @@ DatePicker for Angular & Foundation
 Angular Picker Foundation5 friendly. The only real dependency outside of Angular is Awesome founts.
 
 Project :
- - demo: http://datepicker.breizhme.net
- - home: https://github.com/fulupbzh/datepicker-angular-foundation
+ - demo: http://breizhme.net/datepicker/demo/
+ - home: https://github.com/fulup-bzh/DatePicker
 
 This DatePicker simplified version for Angular of: http://foundation-datepicker.peterbeno.com
  - date picker for foundation/jquery https://github.com/najlepsiwebdesigner/foundation-datepicker
  - date picker for angular/bootstrap https://github.com/angular-ui/bootstrap/tree/master/src/datepicker
 
-Online Demo
------------
-  http://breizhme.net/datepicker/demo/
 
 Installation
 -------------
