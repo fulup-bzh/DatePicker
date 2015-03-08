@@ -63,7 +63,7 @@ function datePicker ($log, $document, $filter) {
         footTemplateDays: '<tfoot class="picker {{todayClass}}" ng-show="todayButton"><tr><th colspan="7" class="today">{{todayButton}}</th></tr></tfoot>'
     };
 
-    var template = '<div class="bzm-date-selector"> <div ng-click="displayPicker()" class="date-display"> <input readonly class="date-input" placeholder="{{placeholder}}" value="{{modelviewvalue}}"></div>' +
+    var template = '<div class="bzm-date-picker"> <div ng-click="displayPicker()" class="date-display"> <input readonly class="date-input" placeholder="{{placeholder}}" value="{{modelviewvalue}}"></div>' +
 
         '<div ng-show="showPicker" class="datepicker datepicker-dropdown">'+
         '<div ng-show="viewMode == 0" class="datepicker-days">'+
