@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta name="Author" content="Fulup Ar Foll">
+	<meta name="Object" content="Angular BZM-DatePicker For Angular Demo">
+
+	<!-- Load Foundation CSS -->
+	<script src="http://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js"></script>
+	<link href="http://cdnjs.cloudflare.com/ajax/libs/foundation/5.2.0/css/foundation.min.css" rel="stylesheet"/>
+
+	<!-- Load Awesome Fonts CSS -->
+	<link href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet"/>
+
+	<!-- Load Angular JS -->
+	<script src="http://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.13/angular.js"></script>
+	<script src="externals/mm-foundation-tpls.min.js"></script>
+	<script src="externals/angular-ui-notification.min.js"></script>
+	<link  href="externals/angular-ui-notification.min.css" rel="stylesheet"/>
+
+    <!-- Load BZM-DatePicker JS & CSS -->
+	<link href="../dist/bzm-date-picker.css" rel="stylesheet"/>
+	<!--<script src="../dist/bzm-date-picker.min.js"></script>-->
+	<script src="../src/js/BzmDatePickerMod.js"></script>
+
+    <!-- Load Application Demo -->
+	<script src="date-picker-demo-app.js"></script>
+	<link href="date-picker-demo-app.css" rel="stylesheet"/>
+
+</head>
+
+<body  ng-app="BzmDatePickerDemo">
+	<div  ng-controller=DemoController>
+		<div class="row">
+		<h2>Foundation Friendly Angilar Date Picker (bzm-date-picker) </h2>
+		</div>
+
+		<div class="row">
+			<h3>Simple Date Pickers</h3>
+			<div class="small-6 columns">
+				<h4>Simplest Picker with No Restriction</h4>
+				<date-picker id="picker-1" class="my-date-picker"
+							 format="(EEE) dd-MMM-yyyy" placeholder="Basic Date Selection" today="Today Not Tomorrow"
+							 ng-model="pickdate1" callback="datePickerCB"
+				></date-picker>
+				<p>Selected Date : {{pickdate1.toString()}}</p>
+			</div>
+
+			<div class="small-6 columns">
+				<h4>Picker Two weeks selectable period plus Sunday Off</h4>
+				<date-picker id="picker-2" class="my-date-picker"
+							 format="(EEE) dd-MMM-yyyy" placeholder="Basic Reduced Selection" dayoff="0"
+							 ng-model="pickdate2" callback="datePickerCB" not-after="date1" not-before="date2"
+			 	></date-picker>
+				<ul>
+				<li>Selected Date : {{pickdate2.toString()}}</li>
+				<li>Start Date    : {{date1.toString()}}</li>
+				<li>End   Date    : {{date2.toString()}}</li>
+				</ul>
+			</div>
+		</div>
+
+		<div class="row">
+			<h3>Checkin/Checkout Date Picker</h3>
+			<div class="small-6 columns">
+				<date-picker  id="picker-3"  class="my-date-picker"
+							 placeholder="Checkin Date (German)" dayoff="6,0" today="true" language="de"
+							 ng-model="checkinDate" callback="datePickerCB" not-after="checkoutDate" not-after="endDate"
+				></date-picker>
+				<p>Checkin : {{checkinDate.toString()}}<br>
+				<b ng-show="(checkoutDate-checkinDate)/(24*3600*1000) > 0">Selected Period: {{(checkoutDate-checkinDate)/(24*3600*1000)}} Days.</b>
+				</p>
+			</div>
+
+			<div class="small-6 columns">
+				<date-picker  id="picker-4" class="my-date-picker"
+							 placeholder="Checkout Date (French)" dayoff="6,0" today="true" language="fr"
+							 ng-model="checkoutDate" callback="datePickerCB" not-before="checkinDate" not-after="endDate"
+				></date-picker>
+				<p>Checkout :  {{checkoutDate.toString()}}</p>
+			</div>
+		</div>
+
+	</div>
+</body>
+
+</html>
