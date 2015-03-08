@@ -34,8 +34,9 @@ Usage  <date-picker>
 ---------------------
 ```
    <date-picker
-      class="my-project-class-4-date-picker"
-      placeholder="Track Date Selection"
+      id="my-picker-name"                     // only use as an argument to callback
+      class="my-custom-class"                 // default class is bzm-date-picker
+      placeholder="Track Date Selection"      // place holder for date readonly input zone
 
       <!-- Angular Scope Variables -->
       callback="myCallBack"                    // $scope.myCallBack(selectedDate) is called when ever a new date is selected
