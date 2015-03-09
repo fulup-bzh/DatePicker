@@ -9,9 +9,9 @@
 
 var DatePicker = angular.module('bzm-date-picker',[]);
 
-DatePicker.directive('datePicker', ["$log", "$document", "$filter", datePicker]);
+DatePicker.directive('datePicker', ["$log", "$document", "$filter", bzmDatePicker]);
 
-function datePicker ($log, $document, $filter) {
+function bzmDatePicker ($log, $document, $filter) {
 
     var dates = {
         en: {
@@ -606,6 +606,7 @@ function datePicker ($log, $document, $filter) {
                 console.log (event)
                 if (event.explicitOriginalTarget) scope.onclick (event.explicitOriginalTarget);
                 else if (event.toElement) scope.onclick (event.toElement);
+                else if (event.target)    scope.onclick (event.target);
                 else console.log ("Browser not supported [report a bug]")
             }
 
