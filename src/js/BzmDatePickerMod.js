@@ -210,11 +210,17 @@ function datePicker ($log, $document, $filter) {
         };
 
 
+        scope.today = function () {
+            var now  =new Date();
+            var today= new Date (now.getFullYear(), now.getMonth(), now.getDate(),0,0,0,0);
+            return today;
+        };
+
         // update internal value of ng-model [external form is updated automatically through scope/watch]
         scope.setDate =  function(date){
 
             // if no date is provided take Today/NOW
-            if (!date) date = new Date();
+            if (!date) date = scope.today();
 
             // update date model through its scope
             scope.$apply(function() {
@@ -283,7 +289,7 @@ function datePicker ($log, $document, $filter) {
             var startMonth= scope.startDate.getMonth();
             var endYear   = scope.endDate.getFullYear();
             var endMonth  = scope.endDate.getMonth();
-            var today = new Date();
+            var today = scope.today();
 
             // insert current date on top of picker table
             scope.find('.datepicker-days th.date-switch').text(dates[scope.language].months[viewmonth]+' '+viewyear);
@@ -328,7 +334,7 @@ function datePicker ($log, $document, $filter) {
                     clsName += ' new';
                 }
                 // Process Today highlight and button Display
-                if (prevMonth.getFullYear() == today.getFullYear() && prevMonth.getMonth() == today.getMonth() && prevMonth.getDate() == today.getDate()) {
+                if (prevMonth == today) {
                     if (scope.todayHighlight) clsName += ' today';
                     if (attrs.today) {
                         if (disableday) scope.todayClass='disabled'; else  scope.todayClass="enable";
@@ -461,7 +467,6 @@ function datePicker ($log, $document, $filter) {
                         }
                         scope.fill();
                     } else if (closestElemDom.classList.contains ('today')) {
-
                         // select current day and force picker closing
                         scope.setDate();
                         if (scope.autohide) scope.hide(true);
