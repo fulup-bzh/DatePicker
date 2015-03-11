@@ -22,6 +22,7 @@
 	<link href="../dist/bzm-date-picker.css" rel="stylesheet"/>
 	<!--<script src="../dist/bzm-date-picker.min.js"></script>-->
 	<script src="../src/js/BzmDatePickerMod.js"></script>
+	<!--<script src="../src/js/BzmCountPickerMod.js"></script>-->
 
     <!-- Load Application Demo -->
 	<script src="date-picker-demo-app.js"></script>
@@ -32,7 +33,7 @@
 <body  ng-app="BzmDatePickerDemo">
 	<div  ng-controller=DemoController>
 		<div class="row">
-		<h2>Foundation Friendly Angilar Date Picker (bzm-date-picker) </h2>
+		<h2>Foundation Friendly Angular Date Picker (bzm-date-picker) </h2>
 		</div>
 
 		<div class="row">
@@ -80,6 +81,11 @@
 				<p>Checkout :  {{checkoutDate.toString()}}</p>
 			</div>
 		</div>
+
+		<!--<div class="row">
+			<count-picker id="counter-1" ng-model="checkoutCount" placeholder="Select a number" not-less="5" not-more="15"></count-picker>
+		</div>
+-->
 
 	</div>
 </body>
