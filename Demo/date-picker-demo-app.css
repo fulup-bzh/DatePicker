@@ -11,3 +11,13 @@ h4 {
     color: darkblue;
     font-size: 1rem;
 }
+
+.zone-1 {
+    margin: 2rem;
+    height: 100%;
+}
+
+.dual-sliders {
+    margin-bottom: 2px;
+    margin-top:0;
+}

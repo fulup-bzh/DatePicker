@@ -22,7 +22,7 @@ module.exports = function (grunt) {
           outputStyle: 'compressed'
         },
         files: {
-          'dist/bzm-date-picker.css': 'src/scss/*.scss'
+          'dist/bzm-date-picker.css': ['src/scss/app.scss']
         }
       }
     },

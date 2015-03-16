@@ -31,8 +31,21 @@ function DemoController (scope, Notification) {
 
         if (scope.count++ > 1000) return; // more than 1000 mean we have a bug :)
 
-        console.log (scope.count, "$scope.datePickerCB pickdate=%s", pickdate.toString());
+        console.log (scope.count, "$scope.datePickerCB pickerId=%s pickdate=%s", pickerid, pickdate.toString());
         Notification.success ({message: scope.count + " : " + pickerid + " ==> " + pickdate.toString(), width: 100, delay: 10000});
+    }
+
+
+    // testing range slider
+    scope.sliderVal1 = 30;
+    scope.sliderVal2 = 8;
+    scope.sliderVal3 = 18;
+    scope.rangeSliderCB = function (value, sliderid) {
+
+        if (scope.count++ > 1000) return; // more than 1000 mean we have a bug :)
+
+        console.log (scope.count, "$scope.rangeSliderCB sliderId=%s value=%d", sliderid, value);
+        Notification.success ({message: scope.count + " : " + sliderid + " ==> " + value, width: 80, delay: 10000});
     }
 
 };
