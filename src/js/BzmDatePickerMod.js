@@ -278,8 +278,6 @@ function bzmDatePicker ($log, $document, $filter) {
             scope.find('.datepicker-months td').html(html);
         };
 
-
-
         scope.fill= function() {
 
             var viewyear  = scope.viewDate.getFullYear();
@@ -607,7 +605,7 @@ function bzmDatePicker ($log, $document, $filter) {
                 if (event.explicitOriginalTarget) scope.onclick (event.explicitOriginalTarget);
                 else if (event.toElement) scope.onclick (event.toElement);
                 else if (event.target)    scope.onclick (event.target);
-                else alert ("Browser not supported [report a bug]", event);
+                else alert ("Browser not supported [report a bug]");
             }
 
             function mouseup(event) {
