@@ -433,14 +433,12 @@ function bzmDatePicker ($log, $document, $filter) {
 
             // move from DOM element to Angular Element
             var angelem = angular.element(domelem);
-            $log.log ("1 onclick angelem=", angelem)
 
             // in case we have a close button check it 1st
             if (angelem.hasClass('datepicker-close')) {
                 scope.hide(true);
                 return;
             }
-            $log.log ("2 onclick angelem=", angelem)
 
             // search for closest element by tag to find which one was clicked
             var closestElemNg = scope.closest(angelem, ['SPAN','TD','TH']);
