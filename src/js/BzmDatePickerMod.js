@@ -444,12 +444,8 @@ function bzmDatePicker ($log, $document, $filter) {
 
             // search for closest element by tag to find which one was clicked
             var closestElemNg = scope.closest(angelem, ['SPAN','TD','TH']);
-            var closestElemDom= closestElemNg[0];
 
-            //$log.log ("closestElemDom=", closestElemDom, " tag=", closestElemDom.tagName, "class=", closestElemDom.classList);
-
-            switch(closestElemDom.tagName) {
-
+            switch(closestElemNg[0].tagName) {
                 case 'TH':
                     if (closestElemNg.hasClass ("date-switch")) {
                         scope.showMode(1);
