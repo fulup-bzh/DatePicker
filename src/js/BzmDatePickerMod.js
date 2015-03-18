@@ -198,15 +198,18 @@ function bzmDatePicker ($log, $document, $filter) {
         };
 
 
-        // emulate jQuery closest API to enable search by tag+class
+        // emulate jQuery closest API to enable search by tag+class within current element and parents
        scope.closest = function (angelem, selector) {
            var parent = angelem;
            while (parent[0]) {
                 for (var idx= 0; idx < selector.length; idx++) {
-                    if (selector [idx] === parent[0].tagName) return parent;  // HTMLDivElement properties
+                    if (selector [idx] === parent[0].tagName) {
+                        return parent;
+                    }  // HTMLDivElement properties
                 }
-                parent = parent.parent();
+               parent = parent.parent();
             }
+           // alert ("Browser not supported [scope.closest please report a bug]");
         };
 
 
@@ -430,13 +433,14 @@ function bzmDatePicker ($log, $document, $filter) {
 
             // move from DOM element to Angular Element
             var angelem = angular.element(domelem);
+            $log.log ("1 onclick angelem=", angelem)
 
             // in case we have a close button check it 1st
             if (angelem.hasClass('datepicker-close')) {
-                console.log ("closing date picker windows");
                 scope.hide(true);
                 return;
             }
+            $log.log ("2 onclick angelem=", angelem)
 
             // search for closest element by tag to find which one was clicked
             var closestElemNg = scope.closest(angelem, ['SPAN','TD','TH']);
@@ -447,13 +451,13 @@ function bzmDatePicker ($log, $document, $filter) {
             switch(closestElemDom.tagName) {
 
                 case 'TH':
-                    if (closestElemDom.classList.contains ("date-switch")) {
+                    if (closestElemNg.hasClass ("date-switch")) {
                         scope.showMode(1);
                     };
 
-                    if (closestElemDom.classList.contains ("prev") || closestElemDom.classList.contains ("next")) {
+                    if (closestElemNg.hasClass ("prev") || closestElemNg.hasClass ("next")) {
 
-                        var dir = DPGlobal.modes[scope.viewMode].navStep * (closestElemDom.classList.contains ("prev") ? -1 : 1);
+                        var dir = DPGlobal.modes[scope.viewMode].navStep * (closestElemNg.hasClass ("prev") ? -1 : 1);
                         switch (scope.viewMode) {
                             case 0:
                                 scope.viewDate = scope.moveMonth(scope.viewDate, dir);
@@ -464,7 +468,7 @@ function bzmDatePicker ($log, $document, $filter) {
                                 break;
                         }
                         scope.fill();
-                    } else if (closestElemDom.classList.contains ('today')) {
+                    } else if (closestElemNg.hasClass ('today')) {
                         // select current day and force picker closing
                         scope.setDate();
                         if (scope.autohide) scope.hide(true);
@@ -473,8 +477,8 @@ function bzmDatePicker ($log, $document, $filter) {
                     break;
 
                 case 'SPAN':
-                    if (!closestElemDom.classList.contains('disabled')) {
-                        if (closestElemDom.classList.contains('month')) {
+                    if (!closestElemNg.hasClass('disabled')) {
+                        if (closestElemNg.hasClass('month')) {
                             var months = closestElemNg.parent().find("span");
                             for (var idx=0; idx < months.length; idx++) {
                                 if (closestElemNg.text() === months.eq(idx).text()) {
@@ -493,7 +497,7 @@ function bzmDatePicker ($log, $document, $filter) {
                     break;
 
                 case 'TD':
-                    if (closestElemDom.classList.contains('day') && !closestElemDom.classList.contains('disabled')){
+                    if (closestElemNg.hasClass('day') && !closestElemNg.hasClass('disabled')){
 
                         var day   = parseInt(closestElemNg.text(), 10)||1;
                         var year  = scope.viewDate.getFullYear(),
@@ -585,7 +589,6 @@ function bzmDatePicker ($log, $document, $filter) {
         // input field was selected
         scope.displayPicker = function (elem) {
           if (!scope.picker) {
-              console.log ("Picker=%d Not Ready", scope.pickerid);
               return;
           }
 
@@ -599,17 +602,16 @@ function bzmDatePicker ($log, $document, $filter) {
         scope.bindevent = function (picker) {
 
             function mousedown(event) {
-                console.log ("Mouse in Picker")
+                //console.log ("Mouse in Picker")
                 event.preventDefault();
-                console.log (event)
-                if (event.explicitOriginalTarget) scope.onclick (event.explicitOriginalTarget);
-                else if (event.toElement) scope.onclick (event.toElement);
-                else if (event.target)    scope.onclick (event.target);
-                else alert ("Browser not supported [report a bug]");
+                if (event.explicitOriginalTarget) scope.onclick (event.explicitOriginalTarget); // Firefox
+                else if (event.target) scope.onclick (event.target); // IExplorer & Chrome
+                // else if (event.currentTarget)  {console.log ("curenttarget used"); scope.onclick (event.currentTarget)} // chrome
+                else alert ("Browser click event not supported [report a bug]");
             }
 
             function mouseup(event) {
-                console.log ("Mouse out of Picker")
+                //console.log ("Mouse out of Picker")
                 $document.off('mouseup');
             }
             picker.on('mousedown', mousedown);
