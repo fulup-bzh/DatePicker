@@ -524,6 +524,8 @@ function bzmDatePicker ($log, $document, $filter) {
         // Minimal keystroke handling to close picker with ESC
         scope.keydown=  function(e){
 
+            console.log
+
             switch(e.keyCode){
                 case 27: // escape
                 case 13: // enter
@@ -570,7 +572,7 @@ function bzmDatePicker ($log, $document, $filter) {
             scope.place();
             scope.viewMode = 0;
             scope.showPicker = true;
-            $document.on('keypress',scope.keydown);
+            $document.on('keydown',scope.keydown);
 
             if (apply) scope.$apply();
         };
@@ -580,7 +582,7 @@ function bzmDatePicker ($log, $document, $filter) {
             scope.showPicker = false;
             scope.picker.off('mousedown');
 
-            $document.unbind('keypress', scope.keydown);
+            $document.unbind('keydown', scope.keydown);
             if (apply) scope.$apply();
         };
 
