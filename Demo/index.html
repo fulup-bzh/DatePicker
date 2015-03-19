@@ -70,7 +70,7 @@
 		<div class="row">
 			<h3>Checkin/Checkout Date Picker</h3>
 			<div class="small-6 columns">
-				<date-picker  id="picker-3"  class="my-date-picker"
+				<date-picker  id="picker-3"  class="my-date-picker" label="Checkout" icon="true"
 							 placeholder="Checkin Date (German)" dayoff="6,0" today="true" language="de"
 							 ng-model="checkinDate" callback="datePickerCB" not-after="checkoutDate" not-after="endDate"
 				></date-picker>
@@ -80,7 +80,7 @@
 			</div>
 
 			<div class="small-6 columns">
-				<date-picker  id="picker-4" class="my-date-picker"
+				<date-picker  id="picker-4" class="my-date-picker" label="Checkin" icon="true"
 							 placeholder="Checkout Date (French)" dayoff="6,0" today="true" language="fr"
 							 ng-model="checkoutDate" callback="datePickerCB" not-before="checkinDate" not-after="endDate"
 				></date-picker>
@@ -89,6 +89,16 @@
 			<p><b>Time selection</b>: <a href="http://breizhme.net/rangeslider/demo/">BZM-RangeSlider</a></p>
 
 		</div>
+		<div class="row">
+			<h3>Iconify Date Picker</h3>
+			<div class="small-6 columns">
+				<date-picker  id="picker-5" class="my-date-picker" iconify="true"
+							  title="Check to select a Date" dayoff="6,0" today="true"
+							  ng-model="iconDate" callback="datePickerCB"
+						></date-picker>
+				Date :  {{iconDate.toString()}}
+			</div>
+   	   </div>
 	</div>
 </body>
 

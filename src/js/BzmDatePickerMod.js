@@ -63,7 +63,11 @@ function bzmDatePicker ($log, $document, $filter) {
         footTemplateDays: '<tfoot class="picker {{todayClass}}" ng-show="todayButton"><tr><th colspan="7" class="today">{{todayButton}}</th></tr></tfoot>'
     };
 
-    var template = '<div class="bzm-date-picker"> <div ng-click="displayPicker()" class="date-display"> <input readonly class="date-input" placeholder="{{placeholder}}" value="{{modelviewvalue}}"></div>' +
+    var template = '<div class="bzm-date-picker"> ' +
+        '<div ng-click="displayPicker()" class="date-display">' +
+        '<label for={{pickerid}} class="date-input-label"></label>' +
+        '<input readonly id={{pickerid}} class="date-input" placeholder="{{placeholder}}" value="{{modelviewvalue}}">' +
+        '<span class="date-input-icon"></span>' +
 
         '<div ng-show="showPicker" class="datepicker datepicker-dropdown">'+
         '<div ng-show="viewMode === 0" class="datepicker-days">'+
@@ -622,14 +626,14 @@ function bzmDatePicker ($log, $document, $filter) {
                 var dayoff = attrs.dayoff.split(',');
                 for (var idx = 0; idx < dayoff.length; idx++) scope.dayoff.push(parseInt(dayoff[idx]));
             }
-            scope.pickerid          = attrs.id || "date-picker+" + parseInt (Math.random() * 1000);
+            scope.pickerid          = attrs.id || "date-picker-" + parseInt (Math.random() * 1000);
             scope.language          = attrs.language    || scope.locale || "en";
             scope.autohide          = attrs.autohide    || true;
             scope.weekStart         = attrs.weekstart   || 1;
             scope.calendarWeeks     = attrs.weeknum     || false;
             scope.todayButton       = attrs.today       || false;
             scope.todayHighlight    = attrs.highlight   || true;
-            scope.placeholder       = attrs.placeholder || locales.placeholder;
+            scope.placeholder       = attrs.placeholder || "";
             scope.format            = attrs.format      || scope.datefmt || "dd-MM-yyyy";
             scope.locales           = dates [scope.language];
 
@@ -639,6 +643,24 @@ function bzmDatePicker ($log, $document, $filter) {
 
             if (attrs.today && scope.todayButton.toLowerCase() === "true") {
                 scope.todayButton = scope.locales.today;
+            }
+
+            if (attrs.iconify) {
+                var input= element.find('input');
+                var label= element.find('label');
+                input.addClass ("date-input-hidden");
+                label.addClass ("date-input-hidden");
+                element.addClass ("bzm-iconified")
+            }
+
+            if (attrs.icon || attrs.iconify) {
+                var span= element.find('span');
+                span.addClass ("icon-label-input fa fa-calendar fi-calendar");
+            }
+
+            if (attrs.label) {
+                var label= element.find ('label');
+                label.html (attrs.label);
             }
 
             // Monitor any changes on start/stop dates.

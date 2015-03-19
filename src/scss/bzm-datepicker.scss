@@ -21,12 +21,28 @@ $activeColor: #2ba6cb;
   transition: border 0.2s linear 0s, box-shadow 0.2s linear 0s;
 }
 
+.bzm-iconified {
+  display: inline-block;
+}
 
 .bzm-date-picker {
 
+  label, input {
+	width: inherit;
+  }
   // Input zone style
   .date-display {
 	display: inline-block;
+	width: inherit;
+  }
+
+  .icon-label-input {
+	float: right;
+  }
+
+  .date-input-hidden {
+	display:none;
+	visibility:hidden;
   }
 
   // real datepicker styles
