@@ -401,12 +401,9 @@ function bzmDatePicker ($log, $document, $filter) {
         // Place picker on the screen [need to be fixes to handle exceptions]
         scope.place = function(){
 
-            var bounds = element[0].getBoundingClientRect();
-            // $log.log ("bounds=", bounds, "picker=", scope.picker);
-
             scope.picker.css({
-                top:    bounds.top,
-                left:   bounds.left,
+                top:    element[0].offsetTop,
+                left:   element[0].offsetLeft,
                 zIndex: 100,
                 display: "block"
             });
