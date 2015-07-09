@@ -592,7 +592,7 @@ function bzmDatePicker ($log, $document, $filter) {
           if (!scope.showPicker) {
               scope.bindevent(scope.picker);
               scope.show();
-          } else scope.hide();
+          }
         };
 
         // bind mouse event
