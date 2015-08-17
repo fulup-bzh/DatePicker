@@ -660,6 +660,10 @@ function bzmDatePicker ($log, $document, $filter) {
             if (attrs.label) {
                 var label= element.find ('label');
                 label.html (attrs.label);
+            } else {
+                // if the label is not set, delete the label tag from template
+                var label = element.find('label');
+                label.remove();
             }
 
             // Monitor any changes on start/stop dates.
