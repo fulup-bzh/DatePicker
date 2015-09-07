@@ -1,7 +1,7 @@
 DatePicker for Angular & Foundation
 ====================================
 
-Angular Picker Foundation5 friendly. The only real dependency outside of Angular is Awesome founts.
+Angular Picker Foundation5 friendly. The only real dependency outside of Angular is Font Awesome.
 
 Project :
  - demo: http://breizhme.net/datepicker/demo/
