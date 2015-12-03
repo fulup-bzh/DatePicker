@@ -128,6 +128,37 @@ function bzmDatePicker ($log, $document, $filter) {
 
     function link (scope, element, attrs, model) {
 
+        // logic for body's click handler
+         var bodyListenerLogic = function(e){
+            var clickedElement = e.target;
+            var insideDatepicker = false;
+            do {
+                // check if user has clicked inside the datepicker
+                if(clickedElement != document && (clickedElement.classList && (clickedElement.classList.contains('showPicker') || clickedElement.classList.contains('bzm-date-picker')))) {
+                    insideDatepicker = true;
+                    break;
+                }
+            } while ((clickedElement = clickedElement.parentNode));
+
+            // hide datepicker if user has clicked outside the datepicker
+            if(!insideDatepicker) {
+                scope.hide(true);
+                // unregister body's click listener after closing the datepicker
+                unregisterBodyListener();
+            }
+        }
+
+
+        // register click listener on body
+        var registerBodyListener = function(){
+            document.body.addEventListener('click', bodyListenerLogic)
+        };
+
+        // unregister click listener on body
+        var unregisterBodyListener = function(){
+            document.body.removeEventListener('click', bodyListenerLogic)
+        }
+
         // update external representation when internal value change
         model.$formatters.unshift(function (date) {
 
@@ -592,6 +623,8 @@ function bzmDatePicker ($log, $document, $filter) {
           if (!scope.showPicker) {
               scope.bindevent(scope.picker);
               scope.show();
+              // register body's click listener when datepicker is displayed
+              registerBodyListener();
           }
         };
 
