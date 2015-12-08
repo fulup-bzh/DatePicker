@@ -90,13 +90,27 @@
 
 		</div>
 		<div class="row">
-			<h3>Iconify Date Picker</h3>
 			<div class="small-6 columns">
-				<date-picker  id="picker-5" class="my-date-picker" iconify="true"
-							  title="Check to select a Date" dayoff="6,0" today="true"
-							  ng-model="iconDate" callback="datePickerCB"
-						></date-picker>
-				Date :  {{iconDate.toString()}}
+				<h3>Iconify Date Picker</h3>
+				<div class="small-6 columns">
+					<date-picker  id="picker-5" class="my-date-picker" iconify="true"
+								  title="Check to select a Date" dayoff="6,0" today="true"
+								  ng-model="iconDate" callback="datePickerCB"
+							></date-picker>
+					Date :  {{iconDate.toString()}}
+				</div>
+			</div>
+			<div class="small-6 columns">
+				<h3>Month Picker</h3>
+				<date-picker  id="picker-6" class="my-date-picker"
+								  placeholder="Check to select a Month"
+								  month-only="true"
+								  format="MMM, yyyy"
+								  ng-model="monthPicker" callback="datePickerCB"
+							></date-picker>
+				<div ng-if="monthPicker">
+					Selected Month: {{monthPicker.getMonth()+1}}, {{monthPicker.getFullYear()}}
+				</div>
 			</div>
    	   </div>
 	</div>
