@@ -47,8 +47,9 @@ Usage  <date-picker>
       weekstart="1"                            // Week start [1==Monday]
       today='true|text'                        // If true display 'today' in chosen language, if 'text' display text in todaybouton
       dayoff=[6,7]                             // Disable Saturday/Sunday for selection
-      weeknum=true                             // Display week number
-      autohide=false                           // Do not close picker after date selection
+      weeknum="true"                           // Display week number
+      autohide="false"                         // Do not close picker after date selection
+      month-only="true"                       // Restrict user from selecting dates (Allow selection of months and years)
 
    /></date-picker>
 

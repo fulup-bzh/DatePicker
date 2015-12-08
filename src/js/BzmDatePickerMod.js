@@ -128,6 +128,8 @@ function bzmDatePicker ($log, $document, $filter) {
 
     function link (scope, element, attrs, model) {
 
+        var monthOnly = attrs.monthOnly;
+
         // logic for body's click handler
          var bodyListenerLogic = function(e){
             var clickedElement = e.target;
@@ -517,8 +519,17 @@ function bzmDatePicker ($log, $document, $filter) {
                             var year = parseInt(closestElemNg.text(), 10)||0;
                             scope.viewDate.setFullYear(year);
                         }
-                        scope.showMode(-1);
-                        scope.fill();
+                        if(monthOnly && !closestElemNg.hasClass('disabled') && closestElemNg.hasClass('month')){
+                            scope.showMode(-1);
+                            scope.fill();
+                            var temp = document.querySelector('.datepicker-days td.day.picker:not(.old)');
+                            scope.onclick(temp);
+                            scope.hide(true);
+                        }
+                        else{
+                            scope.showMode(-1);
+                            scope.fill();
+                        }
                     }
                     break;
 
@@ -598,7 +609,10 @@ function bzmDatePicker ($log, $document, $filter) {
 
             scope.update();
             scope.place();
-            scope.viewMode = 0;
+            if(monthOnly)
+                scope.viewMode = 1;
+            else
+                scope.viewMode = 0;
             scope.showPicker = true;
             $document.on('keydown',scope.keydown);
 
@@ -726,7 +740,8 @@ return {
           ngModel : '=',  // necessary to update internal from inside directive
           notAfter: '=',  // First acceptable date
           notBefore:'=',  // Last acceptable date
-          callback : '='  // Callback to active when a date is selected
+          callback : '=',  // Callback to active when a date is selected
+          monthOnly : '@', // Restrict user from selecting dates (Allow selection of months and years)
         },
         template: template, // html template is build from JS
         require: 'ngModel', // get access to external/internal representation
