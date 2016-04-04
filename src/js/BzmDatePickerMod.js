@@ -7,11 +7,18 @@
 
 'use strict';
 
-var DatePicker = angular.module('bzm-date-picker',[]);
+var DatePicker = angular.module('bzm-date-picker', []).provider('modernizr', modernizr);
 
-DatePicker.directive('datePicker', ["$log", "$document", "$filter", bzmDatePicker]);
+function modernizr() {
 
-function bzmDatePicker ($log, $document, $filter) {
+    this.$get = function() {
+        return Modernizr || {};
+    };
+}
+
+DatePicker.directive('datePicker', ["$log", "$document", "$filter", "modernizr", bzmDatePicker]);
+
+function bzmDatePicker($log, $document, $filter, modernizr) {
 
     var dates = {
         en: {
@@ -44,22 +51,22 @@ function bzmDatePicker ($log, $document, $filter) {
     };
 
     var partials = {
-        headTemplate : '<thead>'+
-        '<tr>'+
-        '<th class="prev"><i class="fa fa-chevron-left fi-arrow-left"/></th>'+
-        '<th colspan="5" class="date-switch"></th>'+
-        '<th class="next"><i class="fa fa-chevron-right fi-arrow-right"/></th>'+
-        '</tr>'+
-        '</thead>',
+        headTemplate: '<thead>' +
+            '<tr>' +
+            '<th class="prev"><i class="fa fa-chevron-left fi-arrow-left"/></th>' +
+            '<th colspan="5" class="date-switch"></th>' +
+            '<th class="next"><i class="fa fa-chevron-right fi-arrow-right"/></th>' +
+            '</tr>' +
+            '</thead>',
         contTemplate: '<tbody><tr><td colspan="7"></td></tr></tbody>',
         footTemplate: '<tfoot ng-show="todayButton"><tr><th colspan="7" class="today">{{todayButton}}</th></tr></tfoot>',
-        headTemplateDays: '<thead>'+
-        '<tr>'+
-        '<th class="prev"><i class="fa fa-chevron-left fi-arrow-left"/></th>'+
-        '<th colspan="5" class="date-switch"></th>'+
-        '<th class="next"><i class="fa fa-chevron-right fi-arrow-right"/></th>'+
-        '</tr>'+
-        '</thead>',
+        headTemplateDays: '<thead>' +
+            '<tr>' +
+            '<th class="prev"><i class="fa fa-chevron-left fi-arrow-left"/></th>' +
+            '<th colspan="5" class="date-switch"></th>' +
+            '<th class="next"><i class="fa fa-chevron-right fi-arrow-right"/></th>' +
+            '</tr>' +
+            '</thead>',
         footTemplateDays: '<tfoot class="picker {{todayClass}}" ng-show="todayButton"><tr><th colspan="7" class="today">{{todayButton}}</th></tr></tfoot>'
     };
 
@@ -69,54 +76,51 @@ function bzmDatePicker ($log, $document, $filter) {
         '<input readonly id={{pickerid}} class="date-input" placeholder="{{placeholder}}" value="{{modelviewvalue}}">' +
         '<span class="date-input-icon"></span>' +
 
-        '<div ng-show="showPicker" class="datepicker datepicker-dropdown">'+
-        '<div ng-show="viewMode === 0" class="datepicker-days">'+
-        '<table class=" table-condensed">'+
-        partials.headTemplateDays+
-        '<tbody></tbody>'+
-        partials.footTemplateDays+
-        '</table>'+
-        '</div>'+
+        '<div ng-show="showPicker" class="datepicker datepicker-dropdown">' +
+        '<div ng-show="viewMode === 0" class="datepicker-days">' +
+        '<table class=" table-condensed">' +
+        partials.headTemplateDays +
+        '<tbody></tbody>' +
+        partials.footTemplateDays +
+        '</table>' +
+        '</div>' +
 
-        '<div ng-show="viewMode === 1" class="datepicker-months">'+
-        '<table class="table-condensed">'+
-        partials.headTemplate+
-        partials.contTemplate+
-        partials.footTemplate+
-        '</table>'+
-        '</div>'+
+        '<div ng-show="viewMode === 1" class="datepicker-months">' +
+        '<table class="table-condensed">' +
+        partials.headTemplate +
+        partials.contTemplate +
+        partials.footTemplate +
+        '</table>' +
+        '</div>' +
 
-        '<div ng-show="viewMode === 2" class="datepicker-years">'+
-        '<table class="table-condensed">'+
-        partials.headTemplate+
-        partials.contTemplate+
-        partials.footTemplate+
-        '</table>'+
-        '</div>'+
-        '<a class="button datepicker-close small alert right" style="width:auto;"><i class="fa fa-remove fa-times fi-x"></i></a>'+
+        '<div ng-show="viewMode === 2" class="datepicker-years">' +
+        '<table class="table-condensed">' +
+        partials.headTemplate +
+        partials.contTemplate +
+        partials.footTemplate +
+        '</table>' +
+        '</div>' +
+        '<a class="button datepicker-close small alert right" style="width:auto;"><i class="fa fa-remove fa-times fi-x"></i></a>' +
         '</div>';
 
     var DPGlobal = {
-        modes: [
-            {
-                clsName: 'days',
-                navFnc: 'Month',
-                navStep: 1
-            },
-            {
-                clsName: 'months',
-                navFnc: 'FullYear',
-                navStep: 1
-            },
-            {
-                clsName: 'years',
-                navFnc: 'FullYear',
-                navStep: 10
-            }],
-        isLeapYear: function (year) {
+        modes: [{
+            clsName: 'days',
+            navFnc: 'Month',
+            navStep: 1
+        }, {
+            clsName: 'months',
+            navFnc: 'FullYear',
+            navStep: 1
+        }, {
+            clsName: 'years',
+            navFnc: 'FullYear',
+            navStep: 10
+        }],
+        isLeapYear: function(year) {
             return (((year % 4 === 0) && (year % 100 !== 0)) || (year % 400 === 0));
         },
-        getDaysInMonth: function (year, month) {
+        getDaysInMonth: function(year, month) {
             return [31, (DPGlobal.isLeapYear(year) ? 29 : 28), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][month];
         },
         formatDate: function(date, format, timezone) {
@@ -126,24 +130,24 @@ function bzmDatePicker ($log, $document, $filter) {
         }
     };
 
-    function link (scope, element, attrs, model) {
+    function link(scope, element, attrs, model) {
 
         var monthOnly = attrs.monthOnly;
 
         // logic for body's click handler
-         var bodyListenerLogic = function(e){
+        var bodyListenerLogic = function(e) {
             var clickedElement = e.target;
             var insideDatepicker = false;
             do {
                 // check if user has clicked inside the datepicker
-                if(clickedElement != document && (clickedElement.classList && (clickedElement.classList.contains('showPicker') || clickedElement.classList.contains('bzm-date-picker')))) {
+                if (clickedElement != document && (clickedElement.classList && (clickedElement.classList.contains('showPicker') || clickedElement.classList.contains('bzm-date-picker')))) {
                     insideDatepicker = true;
                     break;
                 }
             } while ((clickedElement = clickedElement.parentNode));
 
             // hide datepicker if user has clicked outside the datepicker
-            if(!insideDatepicker) {
+            if (!insideDatepicker) {
                 scope.hide(true);
                 // unregister body's click listener after closing the datepicker
                 unregisterBodyListener();
@@ -152,27 +156,27 @@ function bzmDatePicker ($log, $document, $filter) {
 
 
         // register click listener on body
-        var registerBodyListener = function(){
+        var registerBodyListener = function() {
             document.body.addEventListener('click', bodyListenerLogic)
         };
 
         // unregister click listener on body
-        var unregisterBodyListener = function(){
+        var unregisterBodyListener = function() {
             document.body.removeEventListener('click', bodyListenerLogic)
         }
 
         // update external representation when internal value change
-        model.$formatters.unshift(function (date) {
+        model.$formatters.unshift(function(date) {
 
             // move from internal object format to external view string
-            var fmtdata =  DPGlobal.formatDate (date, scope.format);
+            var fmtdata = DPGlobal.formatDate(date, scope.format);
 
             // check date validity
-            if (date < scope.startDate) model.$setValidity ("DATE-TOO-EARLY", false);
-            if (date > scope.endDate)   model.$setValidity ("DATE-TOO-LATE", false);
+            if (date < scope.startDate) model.$setValidity("DATE-TOO-EARLY", false);
+            if (date > scope.endDate) model.$setValidity("DATE-TOO-LATE", false);
 
             // update template
-            scope.modelviewvalue=fmtdata;
+            scope.modelviewvalue = fmtdata;
 
             return (fmtdata);
         });
@@ -182,7 +186,7 @@ function bzmDatePicker ($log, $document, $filter) {
             return "Hoops";
         });
 
-        scope.moveMonth = function(date, dir){
+        scope.moveMonth = function(date, dir) {
             if (!dir) return date;
             var new_date = scope.ngModel,
                 day = new_date.getDate(),
@@ -190,14 +194,16 @@ function bzmDatePicker ($log, $document, $filter) {
                 mag = Math.abs(dir),
                 new_month, test;
             dir = dir > 0 ? 1 : -1;
-            if (mag == 1){
+            if (mag == 1) {
                 test = dir === -1
                     // If going back one month, make sure month is not current month
                     // (eg, Mar 31 -> Feb 31 == Feb 28, not Mar 02)
-                    ? function(){ return new_date.getMonth() == month; }
+                    ? function() {
+                        return new_date.getMonth() == month; }
                     // If going forward one month, make sure month is as expected
                     // (eg, Jan 31 -> Feb 31 == Feb 28, not Mar 02)
-                    : function(){ return new_date.getMonth() != new_month; };
+                    : function() {
+                        return new_date.getMonth() != new_month; };
                 new_month = month + dir;
                 new_date.setMonth(new_month);
                 // Dec -> Jan (12) or Jan -> Dec (-1) -- limit expected date to 0-11
@@ -205,25 +211,26 @@ function bzmDatePicker ($log, $document, $filter) {
                     new_month = (new_month + 12) % 12;
             } else {
                 // For magnitudes >1, move one month at a time...
-                for (var i=0; i<mag; i++)
-                    // ...which might decrease the day (eg, Jan 31 to Feb 28, etc)...
+                for (var i = 0; i < mag; i++)
+                // ...which might decrease the day (eg, Jan 31 to Feb 28, etc)...
                     new_date = scope.moveMonth(new_date, dir);
                 // ...then reset the day, keeping it in the new month
                 new_month = new_date.getMonth();
                 new_date.setDate(day);
-                test = function(){ return new_month != new_date.getMonth(); };
+                test = function() {
+                    return new_month != new_date.getMonth(); };
             }
             // Common date-resetting loop -- if date is beyond end of month, make it
             // end of month
-            while (test()){
+            while (test()) {
                 new_date.setDate(--day);
                 new_date.setMonth(new_month);
             }
             return new_date;
         };
 
-        scope.moveYear = function(date, dir){
-            return scope.moveMonth(date, dir*12);
+        scope.moveYear = function(date, dir) {
+            return scope.moveMonth(date, dir * 12);
         };
 
         scope.showMode = function(dir) {
@@ -236,42 +243,43 @@ function bzmDatePicker ($log, $document, $filter) {
 
 
         // emulate jQuery closest API to enable search by tag+class within current element and parents
-       scope.closest = function (angelem, selector) {
-           var parent = angelem;
-           while (parent[0]) {
-                for (var idx= 0; idx < selector.length; idx++) {
-                    if (selector [idx] === parent[0].tagName) {
+        scope.closest = function(angelem, selector) {
+            var parent = angelem;
+            while (parent[0]) {
+                for (var idx = 0; idx < selector.length; idx++) {
+                    if (selector[idx] === parent[0].tagName) {
                         return parent;
-                    }  // HTMLDivElement properties
+                    } // HTMLDivElement properties
                 }
-               parent = parent.parent();
+                parent = parent.parent();
             }
-           // alert ("Browser not supported [scope.closest please report a bug]");
+            // alert ("Browser not supported [scope.closest please report a bug]");
         };
 
 
-        scope.today = function () {
-            var now  =new Date();
-            var today= new Date (now.getFullYear(), now.getMonth(), now.getDate(),0,0,0,0);
+        scope.today = function() {
+            var now = new Date();
+            var today = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0, 0);
             return today;
         };
 
         // update internal value of ng-model [external form is updated automatically through scope/watch]
-        scope.setDate =  function(date){
+        scope.setDate = function(date) {
 
             // if no date is provided take Today/NOW
             if (!date) date = scope.today();
 
             // update date model through its scope
             scope.$apply(function() {
-                    scope.ngModel = date;
-                }
-            );
+                scope.ngModel = date;
+            });
             model.$setTouched();
-            if (scope.autohide) scope.hide(true);
+            if (scope.autohide) {
+                scope.hide(true);
+            }
 
             // if a callback defined call it now
-            if (scope.callback) scope.callback (date, scope.pickerid);
+            if (scope.callback) scope.callback(date, scope.pickerid);
         };
 
 
@@ -283,63 +291,63 @@ function bzmDatePicker ($log, $document, $filter) {
             switch (scope.viewMode) {
                 case 0:
                     if (year <= scope.startDate.getFullYear() && month <= scope.startDate.getMonth()) {
-                        scope.find('.prev').css({visibility: 'hidden'});
+                        scope.find('.prev').css({ visibility: 'hidden' });
                     } else {
-                        scope.find('.prev').css({visibility: 'visible'});
+                        scope.find('.prev').css({ visibility: 'visible' });
                     }
                     if (year >= scope.endDate.getFullYear() && month >= scope.endDate.getMonth()) {
-                        scope.find('.next').css({visibility: 'hidden'});
+                        scope.find('.next').css({ visibility: 'hidden' });
                     } else {
-                        scope.find('.next').css({visibility: 'visible'});
+                        scope.find('.next').css({ visibility: 'visible' });
                     }
                     break;
                 case 1:
                 case 2:
                     if (year <= scope.startDate.getFullYear()) {
-                        scope.find('.prev').css({visibility: 'hidden'});
+                        scope.find('.prev').css({ visibility: 'hidden' });
                     } else {
-                        scope.find('.prev').css({visibility: 'visible'});
+                        scope.find('.prev').css({ visibility: 'visible' });
                     }
                     if (year >= scope.endDate.getFullYear()) {
-                        scope.find('.next').css({visibility: 'hidden'});
+                        scope.find('.next').css({ visibility: 'hidden' });
                     } else {
-                        scope.find('.next').css({visibility: 'visible'});
+                        scope.find('.next').css({ visibility: 'visible' });
                     }
                     break;
             }
         };
 
-        scope.fillMonths= function(){
+        scope.fillMonths = function() {
             var html = '',
                 i = 0;
             while (i < 12) {
-                html += '<span class="picker month">'+dates[scope.language].monthsShort[i++]+'</span>';
+                html += '<span class="picker month">' + dates[scope.language].monthsShort[i++] + '</span>';
             }
             scope.find('.datepicker-months td').html(html);
         };
 
-        scope.fill= function() {
+        scope.fill = function() {
 
-            var viewyear  = scope.viewDate.getFullYear();
+            var viewyear = scope.viewDate.getFullYear();
             var viewmonth = scope.viewDate.getMonth();
-            var viewdate  = scope.viewDate.getDate();
+            var viewdate = scope.viewDate.getDate();
             var startYear = scope.startDate.getFullYear();
-            var startMonth= scope.startDate.getMonth();
-            var endYear   = scope.endDate.getFullYear();
-            var endMonth  = scope.endDate.getMonth();
+            var startMonth = scope.startDate.getMonth();
+            var endYear = scope.endDate.getFullYear();
+            var endMonth = scope.endDate.getMonth();
             var today = scope.today();
 
             // insert current date on top of picker table
-            scope.find('.datepicker-days th.date-switch').text(dates[scope.language].months[viewmonth]+' '+viewyear);
+            scope.find('.datepicker-days th.date-switch').text(dates[scope.language].months[viewmonth] + ' ' + viewyear);
 
             scope.updateNavArrows();
             scope.fillMonths();
 
-            var prevMonth = new Date(viewyear, viewmonth-1, 28,0,0,0,0);
+            var prevMonth = new Date(viewyear, viewmonth - 1, 28, 0, 0, 0, 0);
             var day = DPGlobal.getDaysInMonth(prevMonth.getFullYear(), prevMonth.getMonth());
 
             prevMonth.setDate(day);
-            prevMonth.setDate(day - (prevMonth.getDay() - scope.weekStart + 7)%7);
+            prevMonth.setDate(day - (prevMonth.getDay() - scope.weekStart + 7) % 7);
             var nextMonth = new Date(prevMonth.valueOf());
             nextMonth.setDate(nextMonth.getDate() + 42);
             nextMonth = nextMonth.valueOf();
@@ -347,24 +355,24 @@ function bzmDatePicker ($log, $document, $filter) {
             var clsName;
             var disableday;
 
-            while(prevMonth.valueOf() < nextMonth) {
-                clsName="picker"; // reset classes for new picker element
+            while (prevMonth.valueOf() < nextMonth) {
+                clsName = "picker"; // reset classes for new picker element
                 if (prevMonth.getDay() === scope.weekStart) {
                     html.push('<tr>');
-                    if(scope.calendarWeeks){
+                    if (scope.calendarWeeks) {
                         // adapted from https://github.com/timrwood/moment/blob/master/moment.js#L128
-                        var a = new Date(prevMonth.getFullYear(), prevMonth.getMonth(), prevMonth.getDate() - prevMonth.getDay() + 10 - (scope.weekStart && scope.weekStart%7 < 5 && 7)),
+                        var a = new Date(prevMonth.getFullYear(), prevMonth.getMonth(), prevMonth.getDate() - prevMonth.getDay() + 10 - (scope.weekStart && scope.weekStart % 7 < 5 && 7)),
                             b = new Date(a.getFullYear(), 0, 4),
-                            calWeek =  ~~((a - b) / 864e5 / 7 + 1.5);
-                        html.push('<td class="cw">'+ calWeek +'</td>');
+                            calWeek = ~~((a - b) / 864e5 / 7 + 1.5);
+                        html.push('<td class="cw">' + calWeek + '</td>');
                     }
                 }
 
                 if (prevMonth.valueOf() < scope.startDate.valueOf() || prevMonth.valueOf() > scope.endDate.valueOf() ||
-                    scope.dayoff.indexOf (prevMonth.getDay()) !== -1) {
+                    scope.dayoff.indexOf(prevMonth.getDay()) !== -1) {
                     clsName += ' disabled';
                     disableday = true;
-                } else disableday= false;
+                } else disableday = false;
 
                 if (prevMonth.getFullYear() < viewyear || (prevMonth.getFullYear() === viewyear && prevMonth.getMonth() < viewmonth)) {
                     clsName += ' old';
@@ -375,26 +383,27 @@ function bzmDatePicker ($log, $document, $filter) {
                 if (prevMonth === today) {
                     if (scope.todayHighlight) clsName += ' today';
                     if (attrs.today) {
-                        if (disableday) scope.todayClass='disabled'; else  scope.todayClass="enable";
+                        if (disableday) scope.todayClass = 'disabled';
+                        else scope.todayClass = "enable";
                     }
                 }
 
-                if (viewyear === prevMonth.getFullYear() && viewmonth === prevMonth.getMonth() && viewdate === prevMonth.getDate())  {
-                      clsName += ' active';
+                if (viewyear === prevMonth.getFullYear() && viewmonth === prevMonth.getMonth() && viewdate === prevMonth.getDate()) {
+                    clsName += ' active';
                 }
 
-                html.push('<td class="day ' + clsName + '">'+prevMonth.getDate() + '</td>');
+                html.push('<td class="day ' + clsName + '">' + prevMonth.getDate() + '</td>');
                 if (prevMonth.getDay() === scope.weekEnd) {
                     html.push('</tr>');
                 }
-                prevMonth.setDate(prevMonth.getDate()+1);
+                prevMonth.setDate(prevMonth.getDate() + 1);
             }
 
             scope.find('.datepicker-days tbody').empty().append(html.join(''));
             var currentYear = scope.viewDate.getFullYear();
 
             var monthspicker = scope.find('.datepicker-months');
-            scope.find ('th.date-switch', monthspicker).text(viewyear);
+            scope.find('th.date-switch', monthspicker).text(viewyear);
             var monthspan = monthspicker.find('span', monthspicker);
             monthspan.removeClass('active');
 
@@ -407,36 +416,36 @@ function bzmDatePicker ($log, $document, $filter) {
 
             if (viewyear === startYear) {
                 // monthspan.slice(0, startMonth).addClass('disabled');
-                for (var idx=0; idx < startMonth; idx++) {
+                for (var idx = 0; idx < startMonth; idx++) {
                     monthspan.eq(idx).addClass('disabled');
                 }
             }
             if (viewyear === endYear) {
                 //monthspan.slice(endMonth+1).addClass('disabled');
-                for (var idx=endMonth+1; idx < monthspan.length; idx++) {
+                for (var idx = endMonth + 1; idx < monthspan.length; idx++) {
                     monthspan.eq(idx).addClass('disabled');
                 }
             }
 
             html = '';
-            viewyear = parseInt(viewyear/10, 10) * 10;
+            viewyear = parseInt(viewyear / 10, 10) * 10;
             var yearCont = scope.find('.datepicker-years');
-            scope.find ('th.date-switch', yearCont ).text(viewyear + '-' + (viewyear + 9));
-            yearCont= yearCont.find('td');
+            scope.find('th.date-switch', yearCont).text(viewyear + '-' + (viewyear + 9));
+            yearCont = yearCont.find('td');
             viewyear -= 1;
             for (var i = -1; i < 11; i++) {
-                html += '<span class="picker year'+(i === -1 || i === 10 ? ' old' : '')+(currentYear === viewyear ? ' active' : '')+(viewyear < startYear || viewyear > endYear ? ' disabled' : '')+'">'+viewyear+'</span>';
+                html += '<span class="picker year' + (i === -1 || i === 10 ? ' old' : '') + (currentYear === viewyear ? ' active' : '') + (viewyear < startYear || viewyear > endYear ? ' disabled' : '') + '">' + viewyear + '</span>';
                 viewyear += 1;
             }
             yearCont.html(html);
         };
 
         // Place picker on the screen [need to be fixes to handle exceptions]
-        scope.place = function(){
+        scope.place = function() {
 
             scope.picker.css({
-                top:    element[0].offsetTop,
-                left:   element[0].offsetLeft,
+                top: element[0].offsetTop,
+                left: element[0].offsetLeft,
                 zIndex: 100,
                 display: "block"
             });
@@ -445,7 +454,7 @@ function bzmDatePicker ($log, $document, $filter) {
 
         scope.update = function() {
             // Clone current picker's date model value
-            scope.viewDate = new Date (scope.ngModel || new Date());
+            scope.viewDate = new Date(scope.ngModel || new Date());
 
             if (this.viewDate < this.startDate) {
                 this.viewDate = new Date(this.startDate.valueOf());
@@ -457,7 +466,7 @@ function bzmDatePicker ($log, $document, $filter) {
 
 
 
-        scope.dateValueWithinRange = function(date){
+        scope.dateValueWithinRange = function(date) {
             return date >= scope.startDate && date <= scope.endDate;
         };
 
@@ -475,17 +484,17 @@ function bzmDatePicker ($log, $document, $filter) {
             }
 
             // search for closest element by tag to find which one was clicked
-            var closestElemNg = scope.closest(angelem, ['SPAN','TD','TH']);
+            var closestElemNg = scope.closest(angelem, ['SPAN', 'TD', 'TH']);
 
-            switch(closestElemNg[0].tagName) {
+            switch (closestElemNg[0].tagName) {
                 case 'TH':
-                    if (closestElemNg.hasClass ("date-switch")) {
+                    if (closestElemNg.hasClass("date-switch")) {
                         scope.showMode(1);
                     };
 
-                    if (closestElemNg.hasClass ("prev") || closestElemNg.hasClass ("next")) {
+                    if (closestElemNg.hasClass("prev") || closestElemNg.hasClass("next")) {
 
-                        var dir = DPGlobal.modes[scope.viewMode].navStep * (closestElemNg.hasClass ("prev") ? -1 : 1);
+                        var dir = DPGlobal.modes[scope.viewMode].navStep * (closestElemNg.hasClass("prev") ? -1 : 1);
                         switch (scope.viewMode) {
                             case 0:
                                 scope.viewDate = scope.moveMonth(scope.viewDate, dir);
@@ -496,7 +505,7 @@ function bzmDatePicker ($log, $document, $filter) {
                                 break;
                         }
                         scope.fill();
-                    } else if (closestElemNg.hasClass ('today')) {
+                    } else if (closestElemNg.hasClass('today')) {
                         // select current day and force picker closing
                         scope.setDate();
                         if (scope.autohide) scope.hide(true);
@@ -508,7 +517,7 @@ function bzmDatePicker ($log, $document, $filter) {
                     if (!closestElemNg.hasClass('disabled')) {
                         if (closestElemNg.hasClass('month')) {
                             var months = closestElemNg.parent().find("span");
-                            for (var idx=0; idx < months.length; idx++) {
+                            for (var idx = 0; idx < months.length; idx++) {
                                 if (closestElemNg.text() === months.eq(idx).text()) {
                                     scope.viewDate.setMonth(idx);
                                     break;
@@ -516,17 +525,16 @@ function bzmDatePicker ($log, $document, $filter) {
                             }
 
                         } else {
-                            var year = parseInt(closestElemNg.text(), 10)||0;
+                            var year = parseInt(closestElemNg.text(), 10) || 0;
                             scope.viewDate.setFullYear(year);
                         }
-                        if(monthOnly && !closestElemNg.hasClass('disabled') && closestElemNg.hasClass('month')){
+                        if (monthOnly && !closestElemNg.hasClass('disabled') && closestElemNg.hasClass('month')) {
                             scope.showMode(-1);
                             scope.fill();
                             var temp = document.querySelector('.datepicker-days td.day.picker:not(.old)');
                             scope.onclick(temp);
                             scope.hide(true);
-                        }
-                        else{
+                        } else {
                             scope.showMode(-1);
                             scope.fill();
                         }
@@ -534,10 +542,10 @@ function bzmDatePicker ($log, $document, $filter) {
                     break;
 
                 case 'TD':
-                    if (closestElemNg.hasClass('day') && !closestElemNg.hasClass('disabled')){
+                    if (closestElemNg.hasClass('day') && !closestElemNg.hasClass('disabled')) {
 
-                        var day   = parseInt(closestElemNg.text(), 10)||1;
-                        var year  = scope.viewDate.getFullYear(),
+                        var day = parseInt(closestElemNg.text(), 10) || 1;
+                        var year = scope.viewDate.getFullYear(),
                             month = scope.viewDate.getMonth();
                         if (closestElemNg.hasClass('old')) {
                             if (month === 0) {
@@ -554,18 +562,18 @@ function bzmDatePicker ($log, $document, $filter) {
                                 month += 1;
                             }
                         }
-                        scope.setDate( new Date (year, month, day,0,0,0,0));
+                        scope.setDate(new Date(year, month, day, 0, 0, 0, 0));
                     }
                     break;
             }
         };
 
         // Minimal keystroke handling to close picker with ESC
-        scope.keydown=  function(e){
+        scope.keydown = function(e) {
 
             console.log
 
-            switch(e.keyCode){
+            switch (e.keyCode) {
                 case 27: // escape
                 case 13: // enter
                 case 9: // tab
@@ -574,7 +582,7 @@ function bzmDatePicker ($log, $document, $filter) {
         };
 
         // simulate jquery find by classes capabilities [warning only return 1st elements]
-        scope.find = function (select, elem) {
+        scope.find = function(select, elem) {
             var domelem;
 
             if (elem) domelem = elem[0].querySelector(select);
@@ -584,19 +592,19 @@ function bzmDatePicker ($log, $document, $filter) {
             return (angelem);
         };
 
-        scope.setStartDate = function(startDate){
+        scope.setStartDate = function(startDate) {
             if (startDate) {
                 scope.startDate = startDate;
             } else {
-                scope.startDate= new Date (0,0,0); // Sun Dec 31 1899
+                scope.startDate = new Date(0, 0, 0); // Sun Dec 31 1899
             }
         };
 
-        scope.setEndDate= function(endDate){
+        scope.setEndDate = function(endDate) {
             if (endDate) {
                 scope.endDate = endDate;
             } else {
-                scope.endDate = new Date (3000,0,0); // hopefully far enough
+                scope.endDate = new Date(3000, 0, 0); // hopefully far enough
             }
         };
 
@@ -609,12 +617,12 @@ function bzmDatePicker ($log, $document, $filter) {
 
             scope.update();
             scope.place();
-            if(monthOnly)
+            if (monthOnly)
                 scope.viewMode = 1;
             else
                 scope.viewMode = 0;
             scope.showPicker = true;
-            $document.on('keydown',scope.keydown);
+            $document.on('keydown', scope.keydown);
 
             if (apply) scope.$apply();
         };
@@ -622,47 +630,62 @@ function bzmDatePicker ($log, $document, $filter) {
         scope.hide = function(apply) {
 
             scope.showPicker = false;
-            scope.picker.off('mousedown');
+
+            if (Modernizr.touchevents) {
+                scope.picker.off('touchstart');
+            } else {
+                scope.picker.off('mousedown');
+            }
 
             $document.unbind('keydown', scope.keydown);
             if (apply) scope.$apply();
         };
 
         // input field was selected
-        scope.displayPicker = function (elem) {
-          if (!scope.picker) {
-              return;
-          }
+        scope.displayPicker = function(elem) {
+            if (!scope.picker) {
+                return;
+            }
 
-          if (!scope.showPicker) {
-              scope.bindevent(scope.picker);
-              scope.show();
-              // register body's click listener when datepicker is displayed
-              registerBodyListener();
-          }
+            if (!scope.showPicker) {
+                scope.bindevent(scope.picker);
+                scope.show();
+                // register body's click listener when datepicker is displayed
+                registerBodyListener();
+            }
         };
 
         // bind mouse event
-        scope.bindevent = function (picker) {
+        scope.bindevent = function(picker) {
 
-            function mousedown(event) {
-                //console.log ("Mouse in Picker")
+            function clickstart(event) {
+                // console.log ("Mouse in Picker")
                 event.preventDefault();
-                if (event.explicitOriginalTarget) scope.onclick (event.explicitOriginalTarget); // Firefox
-                else if (event.target) scope.onclick (event.target); // IExplorer & Chrome
+                if (event.explicitOriginalTarget) scope.onclick(event.explicitOriginalTarget); // Firefox
+                else if (event.target) scope.onclick(event.target); // IExplorer & Chrome
                 // else if (event.currentTarget)  {console.log ("curenttarget used"); scope.onclick (event.currentTarget)} // chrome
-                else alert ("Browser click event not supported [report a bug]");
+                else alert("Browser click event not supported [report a bug]");
             }
 
-            function mouseup(event) {
+            function clickend(event) {
                 //console.log ("Mouse out of Picker")
-                $document.off('mouseup');
+                if (Modernizr.touchevents) {
+                    $document.off('touchend');
+                } else {
+                    $document.off('mouseup');
+                }
+
             }
-            picker.on('mousedown', mousedown);
+
+            if (Modernizr.touchevents) {
+                picker.on('touchstart',clickstart);
+            } else {
+                picker.on('mousedown',clickstart);
+            }
         };
 
         // directive initialisation
-        scope.init = function () {
+        scope.init = function() {
 
             //$log.log("picker ID=%s", attrs.id, "scope=", scope, "element=", element, ' model=', model, ' contoller-date=', scope.ngModel);
 
@@ -672,16 +695,16 @@ function bzmDatePicker ($log, $document, $filter) {
                 var dayoff = attrs.dayoff.split(',');
                 for (var idx = 0; idx < dayoff.length; idx++) scope.dayoff.push(parseInt(dayoff[idx]));
             }
-            scope.pickerid          = attrs.id || "date-picker-" + parseInt (Math.random() * 1000);
-            scope.language          = attrs.language    || scope.locale || "en";
-            scope.autohide          = attrs.autohide    || true;
-            scope.weekStart         = attrs.weekstart   || 1;
-            scope.calendarWeeks     = attrs.weeknum     || false;
-            scope.todayButton       = attrs.today       || false;
-            scope.todayHighlight    = attrs.highlight   || true;
-            scope.placeholder       = attrs.placeholder || "";
-            scope.format            = attrs.format      || scope.datefmt || "dd-MM-yyyy";
-            scope.locales           = dates [scope.language];
+            scope.pickerid = attrs.id || "date-picker-" + parseInt(Math.random() * 1000);
+            scope.language = attrs.language || scope.locale || "en";
+            scope.autohide = attrs.autohide || true;
+            scope.weekStart = attrs.weekstart || 1;
+            scope.calendarWeeks = attrs.weeknum || false;
+            scope.todayButton = attrs.today || false;
+            scope.todayHighlight = attrs.highlight || true;
+            scope.placeholder = attrs.placeholder || "";
+            scope.format = attrs.format || scope.datefmt || "dd-MM-yyyy";
+            scope.locales = dates[scope.language];
 
             // start/end Date are copied within private scope to avoid infinite loop when shared with an other picker
             scope.setStartDate(scope.notBefore);
@@ -692,21 +715,21 @@ function bzmDatePicker ($log, $document, $filter) {
             }
 
             if (attrs.iconify) {
-                var input= element.find('input');
-                var label= element.find('label');
-                input.addClass ("date-input-hidden");
-                label.addClass ("date-input-hidden");
-                element.addClass ("bzm-iconified")
+                var input = element.find('input');
+                var label = element.find('label');
+                input.addClass("date-input-hidden");
+                label.addClass("date-input-hidden");
+                element.addClass("bzm-iconified")
             }
 
             if (attrs.icon || attrs.iconify) {
-                var span= element.find('span');
-                span.addClass ("icon-label-input fa fa-calendar fi-calendar");
+                var span = element.find('span');
+                span.addClass("icon-label-input fa fa-calendar fi-calendar");
             }
 
             if (attrs.label) {
-                var label= element.find ('label');
-                label.html (attrs.label);
+                var label = element.find('label');
+                label.html(attrs.label);
             } else {
                 // if the label is not set, delete the label tag from template
                 var label = element.find('label');
@@ -715,13 +738,13 @@ function bzmDatePicker ($log, $document, $filter) {
 
             // Monitor any changes on start/stop dates.
             scope.$watch('notBefore', function() {
-                scope.setStartDate (scope.notBefore);
+                scope.setStartDate(scope.notBefore);
                 scope.update();
                 scope.updateNavArrows();
             });
 
-            scope.$watch('notAfter' , function() {
-                scope.setEndDate (scope.notAfter);
+            scope.$watch('notAfter', function() {
+                scope.setEndDate(scope.notAfter);
                 scope.update();
                 scope.updateNavArrows();
             });
@@ -732,20 +755,20 @@ function bzmDatePicker ($log, $document, $filter) {
         scope.init();
     }
 
-return {
-        restrict: "E",    // restrict to <pickadate> HTML element name
+    return {
+        restrict: "EA", // restrict to <pickadate> HTML element name
         scope: {
-          datefmt : '=',  // see angular date format string
-          locale  : '=',  // hopefully this is defined from controller
-          ngModel : '=',  // necessary to update internal from inside directive
-          notAfter: '=',  // First acceptable date
-          notBefore:'=',  // Last acceptable date
-          callback : '=',  // Callback to active when a date is selected
-          monthOnly : '@', // Restrict user from selecting dates (Allow selection of months and years)
+            datefmt: '=', // see angular date format string
+            locale: '=', // hopefully this is defined from controller
+            ngModel: '=', // necessary to update internal from inside directive
+            notAfter: '=', // First acceptable date
+            notBefore: '=', // Last acceptable date
+            callback: '=', // Callback to active when a date is selected
+            monthOnly: '@', // Restrict user from selecting dates (Allow selection of months and years)
         },
         template: template, // html template is build from JS
         require: 'ngModel', // get access to external/internal representation
-        replace: true,      // replace current directive with template while inheriting of class
-        link: link          // pickadate object's methods
+        replace: true, // replace current directive with template while inheriting of class
+        link: link // pickadate object's methods
     };
 }

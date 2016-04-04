@@ -1,7 +1,7 @@
 DatePicker for Angular & Foundation
 ====================================
 
-Angular Picker Foundation5 friendly. The only real dependency outside of Angular is Font Awesome.
+Angular Picker Foundation5 friendly. The only real dependency outside of Angular is Font Awesome and Modernizr.touchevents (included).
 
 Project :
  - demo: http://breizhme.net/datepicker/demo/
@@ -20,6 +20,7 @@ Installation
 2. copy the files
     - **dist/angular-foundation-datepicker-min.js**
     - **dist/angular-foundation-datepicker.css**
+    - **dist/modernizr-custom.min.js** (Ignore if Modernizr.touchevents is already in your project)
 
 3. &lt;link&gt; and &lt;script&gt; them into your page 
 
