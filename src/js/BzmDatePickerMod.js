@@ -570,9 +570,6 @@ function bzmDatePicker($log, $document, $filter, modernizr) {
 
         // Minimal keystroke handling to close picker with ESC
         scope.keydown = function(e) {
-
-            console.log
-
             switch (e.keyCode) {
                 case 27: // escape
                 case 13: // enter
@@ -594,7 +591,7 @@ function bzmDatePicker($log, $document, $filter, modernizr) {
 
         scope.setStartDate = function(startDate) {
             if (startDate) {
-                scope.startDate = startDate;
+                scope.startDate = new Date(startDate);
             } else {
                 scope.startDate = new Date(0, 0, 0); // Sun Dec 31 1899
             }
